@@ -1,0 +1,294 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+public class CSECourseManagement {
+	ArrayList<Student> studentlist = new ArrayList<Student>();
+	ArrayList<Course> courselist = new ArrayList<Course>();
+	ArrayList<Staff> stafflist = new ArrayList<Staff>();
+	Scanner scan = new Scanner(System.in);
+
+	 /*
+	  
+	  
+	  
+	  저장은 잘 되는데 지금 이거 조회하는 쪽에서 오류가나는거임 그 이외에는 괜찮음 나중에 할때 이 부분 수정해야함
+	  
+	  
+	  
+	  
+	  * */
+	public void Login()
+	{
+		while(true)
+		{
+			int login_state = 0;
+			String id, password;
+			System.out.print("Login : ");
+			id = scan.next();
+			System.out.println("");
+			System.out.print("Passwd : ");
+			password = scan.next();
+			// ★★★★★★ 이거 다 수정해야함 로그인해야하는 것부터
+			login_state = check_login(id, password, studentlist, stafflist);
+			if(login_state == 1)
+			{
+				ShowStaffMain();
+				break;
+			}
+
+			
+			if(login_state == 2)
+			{
+				int student_index;
+				student_index = FindStudentIndexAtList(id);
+				ShowStudentMain(student_index); // 여기에 학생 정보를 주자~!!!!!!!!!!!!!!!
+				break;
+			}
+		}
+	}
+	
+	// wrong login : 0, staff login : 1, student login : 2
+	public  int check_login(String id, String pw, ArrayList<Student> studentlist, ArrayList<Staff> stafflist)
+	{	
+		for (Student element : studentlist) {
+			if(id.equals(element.id))
+			{
+				if(pw.equals(element.pw))	
+				{
+					System.out.println("You login by Student");
+					return 2;
+					
+				}
+				else
+				{
+					System.out.println("You enter the wrong password. Please check one more.");
+					return 0;
+				}	
+			}
+		}
+		
+		for (Staff element : stafflist) {
+			if(id.equals(element.id))
+			{
+				if(pw.equals(element.pw))	
+				{
+					System.out.println("You login by Staff");
+					return 1;
+					
+				}
+				else
+				{
+					System.out.println("You enter the wrong password. Please check one more.");
+					return 0;
+				}	
+			}
+		}
+		System.out.println("등록되지 않은 아이디입니다.");
+		return 0;
+	}
+	
+	public  int check_login_staff(String id, String pw, ArrayList<Staff> stafflist)
+	{
+		for (Staff element : stafflist) {
+			if(id.equals(element.id))
+			{
+				if(pw.equals(element.pw))	
+				{
+					System.out.println("You login by Staff");
+					return 1;
+					
+				}else{
+					System.out.println("You enter the wrong password. Please check one more.");
+					}	
+			}
+		}
+		return 0;
+	}
+	
+	
+	public int FindStudentIndexAtList(String id) 
+	{
+		for(int i=0; i<studentlist.size() ;i++)
+		{
+			if(id.equals(studentlist.get(i).id))
+			{
+				return i;
+			}
+		}
+		return 0; // 이거는 아무 상관없음 어차피 학생 check_login에서 무조건 있는 것을 확인했기 떄문에 그냥 컴파일러 오류나지말라고 이걸 달아놓음
+	}
+	
+	public void addStaffID(String id, String pw)
+	{
+		Staff staff = new Staff(id, pw,"00000");
+		stafflist.add(staff);
+	}
+	
+	public void addStudent(String id, String pw, String school_number)
+	{
+		Student student = new Student(id, pw, school_number);
+		studentlist.add(student);
+	}
+	
+	public void addCourse(String courseID, String title)
+	{
+		Course course = new Course(courseID, title);
+		courselist.add(course);
+	}
+	
+	public void ShowStaffMain() 
+	{
+		int menu;
+		System.out.print("연관검색 메뉴 (1) 학생 목록		(2) 강의 목록  ");
+		System.out.print("         (3) 강의목록 개선 여부 확인");
+		System.out.print("(0) 이전");
+		System.out.print(">> 입력 : ");
+		menu = scan.nextInt();
+		
+		switch(menu) {
+		case 0:
+			System.out.println("\n <<Back to the Main Page>>\n");
+			Login(); 
+			break;
+		case 1: ShowStudentList(); break;
+		case 2: ShowCourse(); break;
+		case 3: ShowCousreWhetherOpen();
+		default : break;
+		}
+	}
+
+	public void ShowStudentList() {
+		for(int i=0; i<studentlist.size() ;i++)
+		{
+			System.out.println((i+1) + "번째 학생 : " + studentlist.get(i).school_number + ", " + studentlist.get(i).id + ", " + studentlist.get(i).pw);
+		}	
+		System.out.println("모든 내용을 확인하셨습니다. 다시 메뉴로 돌아가겠습니다.");
+		System.out.println("");
+		ShowStaffMain();
+	}
+	
+	public void ShowCourse() {
+		for(int i=0; i<courselist.size() ;i++)
+		{
+			System.out.println((i+1) + "번째 강의 : " + courselist.get(i).courseID + ", " + courselist.get(i).title);
+		}	
+		System.out.println("모든 내용을 확인하셨습니다. 다시 메뉴로 돌아가겠습니다.");
+		System.out.println("");
+		ShowStaffMain();
+	}
+	
+	public void ShowCousreWhetherOpen(){
+		for(int i=0; i<courselist.size() ;i++)
+		{
+			
+			System.out.print(courselist.get(i).title + "을 수강신청 한 학생은  " + courselist.get(i).appliedstudent.size() + " 명입니다.");
+			
+			if(courselist.get(i).appliedstudent.size() >=2 && courselist.get(i).appliedstudent.size() <= 5)
+			{
+				System.out.println("이번 학기에 개설합니다.");
+			}
+			else
+			{
+				System.out.println("학생 수 부족으로 이번 학기에 개설하지 않습니다.");
+			}	
+		}
+		
+		System.out.println("모든 내용을 확인하셨습니다. 다시 메뉴로 돌아가겠습니다.");
+		System.out.println("");
+		ShowStaffMain();
+	}
+	
+	
+	// 학생 메뉴 
+	public void ShowStudentMain(int student_index) {
+		int menu;
+		System.out.print("학생세부 메뉴 (1) 수강신청	(2) 수강취소  ");
+		System.out.print("         (3) 수강내역확인");
+		System.out.print("(0) 로그아웃	");
+		System.out.print(">> 입력 : ");
+		menu = scan.nextInt();
+		
+		switch(menu) {
+		case 0: 
+			System.out.println("Successfully Logout");
+			Login();
+			break;
+		case 1: ApplyCourse(student_index); break;
+		case 2: DropCourse(student_index); break;
+		case 3: ShowAppliedCourse(student_index); break;
+		default : break;
+		}		
+	}
+	
+	
+	public void ApplyCourse(int student_index) // 여기에 그 몇 명 있는지 조건 있어야함 
+	{
+		int wantCourse;
+		for(int i=0; i<courselist.size() ;i++)
+		{
+			System.out.println((i+1) + "번>  과목번호 : " + courselist.get(i).courseID + "\t과목 : " + courselist.get(i).title);
+		}
+		System.out.print("어떤 과목을 수강 신청하시겠습니까? 번호를 입력하세요 : ");
+		wantCourse = scan.nextInt();
+			
+		if(studentlist.get(student_index).registeredcourselist.contains(courselist.get(wantCourse-1)))
+		{
+			System.out.println(courselist.get(wantCourse-1).title + "은 이미 수강신청한 과목입니다.");
+		}
+		
+		else if(courselist.get(wantCourse-1).appliedstudent.size() >= 5)
+		{
+			System.out.println("정원 수가 다 차서 수강신청 할 수 없습니다.");
+		}
+		
+		else
+		{
+			System.out.println(courselist.get(wantCourse-1).title + "을 수강 신청하였습니다.");
+			studentlist.get(student_index).registeredcourselist.add(courselist.get(wantCourse-1));
+			//  학생이 수강신청하면 그 과목의 학생 정보에도 이 사람이 추가되어야함
+			courselist.get(wantCourse-1).appliedstudent.add(studentlist.get(student_index));
+		}
+		ShowStudentMain(student_index);
+		
+	}
+	
+	private void DropCourse(int student_index) {
+		int dropCourse;
+		for(int i=0; i<courselist.size() ;i++)
+		{
+			System.out.println((i+1) + "번>  과목번호 : " + courselist.get(i).courseID + "\t과목 : " + courselist.get(i).title);
+		}
+		System.out.print("어떤 과목을 수강 취소하시겠습니까? 번호를 입력하세요 : ");
+		dropCourse = scan.nextInt();
+		
+		if(studentlist.get(student_index).registeredcourselist.contains(courselist.get(dropCourse-1)))
+		{
+			System.out.println(courselist.get(dropCourse-1).title + "은 수강 취소되었습니다.");
+			studentlist.get(student_index).registeredcourselist.remove(courselist.get(dropCourse-1));
+			// Course의 학생 리스트 정보에도 이 내용이 삭제되어야함
+			courselist.get(dropCourse-1).appliedstudent.remove(studentlist.get(student_index));
+		}
+		else
+		{
+			System.out.println("수강하지 않은 과목입니다. 한 번 더 확인 부탁드립니다.");
+		}
+		ShowStudentMain(student_index);
+		
+	}
+	
+	private void ShowAppliedCourse(int student_index) {
+		if(studentlist.get(student_index).registeredcourselist.size() == 0)
+			System.out.println("수강하신 과목이 없습니다.");
+		
+		for(int i=0; i<studentlist.get(student_index).registeredcourselist.size() ;i++)
+		{
+			System.out.println(studentlist.get(student_index).registeredcourselist.get(i).title);
+		}	
+		
+		ShowStudentMain(student_index);
+	}
+
+	
+
+	
+	
+}

@@ -1,0 +1,21 @@
+package jv01;
+
+public class Hello {
+
+	public static void main(String[] args) {
+		factorial(100);
+	}
+	
+	public static int factorial(int num) {
+		if(num > 0)
+		{
+			int num2;
+			num2 = num % 2;
+			num /= 2;
+			factorial(num);
+			System.out.println(num2);
+			
+		}
+		return 0;
+	}
+}

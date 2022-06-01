@@ -1,0 +1,44 @@
+import java.util.Scanner;
+import java.util.Stack;
+
+public class homework_problem_2 {
+
+	public static void main(String[] args) {
+
+		Stack<String> stack = new Stack<>();
+		Scanner scan = new Scanner(System.in);
+	
+        int num= 0 ;
+        int output = 1;
+        
+		while(scan.hasNext())
+		{
+			String str;
+			str = scan.nextLine();
+			
+			if(str.equals("-1"))
+			{
+				System.out.println("done");
+				break;
+			}
+			else if(str.equals("Bang Bang"))
+			{
+				stack.pop();
+			}
+			
+			else
+			{
+				stack.push(str);
+			}
+			
+		}
+		for(int i = 0 ; i<=stack.size()+1; i++)
+		{
+			num = Integer.valueOf(stack.pop());
+			output *= num;
+		}
+		System.out.println(output);
+		
+	}
+
+}

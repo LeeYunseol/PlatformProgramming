@@ -1,0 +1,15 @@
+package jv01;
+
+public class Hello {
+
+	public static void main(String[] args) {
+		System.out.println("Hello Java!!");
+		hieveryone(13)
+;	}
+	
+	public static void hieveryone(int age) {
+		System.out.println("좋은 아침입니다.");
+		System.out.println("제 나이는 " + age + "세입니다.");
+	}
+
+}

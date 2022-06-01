@@ -1,0 +1,5 @@
+package jv01;
+
+class dd {
+	System.out.println("¾Æ¾Æ");
+}

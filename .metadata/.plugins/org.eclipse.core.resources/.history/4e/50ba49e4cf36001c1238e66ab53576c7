@@ -1,0 +1,28 @@
+import java.util.Scanner;
+import java.util.ArrayList;
+
+public class Managament {
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+
+		CSECourseManagement SquidCSE = new CSECourseManagement();
+		// Staff 정보 입력
+		SquidCSE.addStaffID("Staff","Squid");
+		// Course 정보 입력 , Number of Course is three. 
+		SquidCSE.addCourse("00000", "C++");
+		SquidCSE.addCourse("00001", "Python");
+		SquidCSE.addCourse("00002", "Java");
+		
+		// Student 정보 입력
+		SquidCSE.addStudent("id000", "pw000", "95088");
+		SquidCSE.addStudent("id001", "pw001", "46135");
+		SquidCSE.addStudent("id002", "pw002", "21574");
+			
+		// Star
+		System.out.println("Welcome to the CSE Deparment!!\n");
+		SquidCSE.Login();
+		
+
+	}
+
+}

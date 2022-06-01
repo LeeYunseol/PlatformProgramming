@@ -1,0 +1,22 @@
+package jv01;
+
+public class Hello {
+
+	public static void main(String[] args) {
+		System.out.println("Hello Java!!");
+		double my = 20.5;
+		hieveryone(13, 12.5);
+		hieveryone(15, my);
+		byeveryone();
+}
+	
+	public static void hieveryone(int age, double height) {
+		System.out.println("좋은 아침입니다.");
+		System.out.println("제 나이는 " + age + "세입니다.");
+		System.out.println("제 키는 " + height + "cm입니다.");
+	}
+
+	public static void byeveryone() {
+		System.out.println("다음에 봅시다.");
+	}
+}
